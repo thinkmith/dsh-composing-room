@@ -48,10 +48,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/qitaizhe0903-crypto/dsh-composing-room.git"
+    "url": "git://github.com/thinkmith/dsh-composing-room.git"
   },
   "bugs": {
-    "url": "https://github.com/qitaizhe0903-crypto/dsh-composing-room/issues"
+    "url": "https://github.com/thinkmith/dsh-composing-room/issues"
   },
-  "homepage": "https://github.com/qitaizhe0903-crypto/dsh-composing-room#readme"
+  "homepage": "https://github.com/thinkmith/dsh-composing-room#readme"
 }
