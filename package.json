@@ -1,0 +1,57 @@
+{
+  "name": "dsh-composing-room",
+  "version": "0.3.0",
+  "description": "DeepSeek Harness plugin: a composer pill that arms a system-prompt section on demand, plus the reference-page writing spec it carries.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "assets",
+    "build",
+    "install.ps1",
+    "install.cmd",
+    "DISCLAIMER.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "dsh": {
+    "client": {
+      "inject": [
+        "slots"
+      ],
+      "platform": "web"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node test/client.mjs && node test/stub.mjs && node test/route.mjs && node test/firstrun.mjs",
+    "build:sfx": "node build/build-sfx.mjs"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "system-prompt",
+    "composer"
+  ],
+  "license": "MIT",
+  "os": [
+    "win32"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/qitaizhe0903-crypto/dsh-composing-room.git"
+  },
+  "bugs": {
+    "url": "https://github.com/qitaizhe0903-crypto/dsh-composing-room/issues"
+  },
+  "homepage": "https://github.com/qitaizhe0903-crypto/dsh-composing-room#readme"
+}

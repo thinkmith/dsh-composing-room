@@ -1,0 +1,11 @@
+# build output and local install leftovers
+dist/
+node_modules/
+*.log
+
+# local-only shortcuts and scratch
+*.lnk
+prompt.txt
+room-toggle.ps1
+room-toggle.cmd
+/tmp/
