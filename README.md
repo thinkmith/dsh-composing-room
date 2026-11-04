@@ -66,6 +66,8 @@ ctx.inject(['webServer'], (webCtx) => { /* 可选服务在回调里才拿 */ })
 
 ## 安装（换一台机器照这个来）
 
+最快的一条：去 [Releases](https://github.com/qitaizhe0903-crypto/dsh-composing-room/releases/latest) 下 `dsh-composing-room-<ver>-setup.exe`，双击，重启 DSH 一次。下面四条路线效果一样，按你手头的条件挑。
+
 一句话：**装完就有输入框右边那个按钮**。按钮是包里的 client 半边（`lib/client.js` + package.json 的 `dsh.client`），宿主半边在第一次加载时会把 `assets/prompt.default.txt` 复制到 `%USERPROFILE%\.dsh\composing-room\prompt.txt`，所以不存在"装了但没内容、点了没反应"的情况。
 
 ### 路线 A：直接给这个文件夹（最快）

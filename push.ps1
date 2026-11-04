@@ -67,7 +67,8 @@ if ($staged) {
 }
 if (-not (& git tag -l $tag)) { & git tag $tag }
 
-& git remote remove origin 2>$null | Out-Null
+& git remote get-url origin 2>$null | Out-Null
+if ($LASTEXITCODE -eq 0) { & git remote remove origin 2>$null | Out-Null }
 $authUrl = "https://$Token@github.com/$full.git"
 & git remote add origin $authUrl
 Write-Host 'pushing...'
