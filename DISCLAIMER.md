@@ -1,33 +1,76 @@
-# 声明 / Notice
-
-本仓库（`dsh-composing-room`）是一个 **DeepSeek Harness（DSH）本地插件**，作用只有一件：把一份**写作格式规范**作为独立的 system prompt 段落挂进会话，并且**默认关闭**，需要使用者自己在输入框右侧点一下（或 `/room on`）才生效。
-
-## 1. 内容性质
-
-- `assets/prompt.default.txt`（以及安装后落到 `%USERPROFILE%\.dsh\composing-room\prompt.txt` 的那份）是**本仓库作者撰写的提示词文本**，属于提示词工程 / 写作规范类文本，不含任何第三方受版权保护的正文、代码或数据集。
-- 它规定的是**输出形式**（首行标题、页脚、长度下限、按工件而非按建议来写、占位符写法等）与**角色口吻**，用于技术文档、工艺说明书、案卷式记录这类排版。
-- 文本内出现的 `[TARGET]`、`[HOST]`、`[SAMPLE]`、`[NUMBER]` 等一律是**占位符**，仓库不附带任何真实目标、凭据、样本或个人数据。
-
-## 2. 使用范围
-
-- 本插件面向**使用者自己的机器、自己的 DSH 安装、自己的模型账号与自己的会话**。
-- 提示词可能改变模型的默认回答边界。**是否启用、在什么会话启用、用来写什么，由使用者自行判断并自行负责**；作者不代为判断用途合法性，也不对使用后果承担责任。
-- 请勿用于：未经授权的系统访问、对他人权益的侵害、冒充他人身份、规避你所在司法辖区或你所使用服务方的强制性规定。
-- 本仓库与 DeepSeek（深度求索）及其关联方**无任何隶属、背书或合作关系**；模型服务的使用仍受你与服务方之间协议的约束。
-
-## 3. 无担保
-
-本软件按 MIT 许可「AS IS」提供，不附带任何明示或默示担保（包括但不限于适销性、特定用途适用性与不侵权担保）。作者不对因使用本软件产生的任何直接或间接损失负责。完整条款见 [LICENSE](LICENSE)。
-
-## 4. 第三方组件
-
-- 打包脚本使用 Windows 自带的 IExpress，不随仓库分发任何第三方二进制。
-- 安装器不联网、不下载、不上报；除写入 `%USERPROFILE%\.dsh\` 下与本插件相关的路径外，不改动系统其它位置。
-
-## 5. 移除
-
-卸载步骤见 README「卸载」一节。删除 `%USERPROFILE%\.dsh\composing-room\` 目录即可连同正文与状态一起清除。
+_本文不是法律意见，只是一份把话说清楚的说明。使用本插件前请完整读一遍，读完再装。_
 
 ---
 
-English summary: this repository is a local DeepSeek Harness plugin that mounts a **writing-format specification** as an optional, off-by-default system-prompt section. The bundled text is original prompt-engineering material authored for this project; it contains no third-party copyrighted content and no real targets, credentials, samples, or personal data. Use it on systems, accounts, and sessions you control; you are responsible for how you use it. Not affiliated with or endorsed by DeepSeek. Provided "AS IS" under the MIT License, without warranty of any kind.
+## 一、这个仓库里是什么
+
+| 组成 | 是什么 | 不是什么 |
+|---|---|---|
+| `lib/index.js` | DSH 宿主半边：注册一个 system prompt 段落、一个 `/room` 命令、一个本地 HTTP 路由 | 不联网、不采集、不上报 |
+| `lib/client.js` | DSH 浏览器半边：输入框右侧那颗胶囊按钮 | 不读文件、不碰凭据，只调本机 `127.0.0.1` 的路由 |
+| `assets/prompt.default.txt` | 默认正文（一段写作规范文本，7407 字符） | 不是可执行代码，不会被"运行" |
+| `install.ps1` / `install.cmd` / `*.exe` / `*.tgz` | 四种安装方式，做同一件事：写文件 + 改 profile 配置 + 铺默认正文 | 不安装服务、不写注册表、不设开机自启 |
+
+一句话：它只在你自己的机器、你自己的 DSH 里，往**你自己的会话**加一段文本。
+
+---
+
+## 二、改变的是什么，后果归谁
+
+1. 插件挂上后，`prompt.txt` 的正文会作为**独立 system 段落**进入该会话的每一轮请求，位置在所有内置段之后。这会改变模型回答的默认边界与表达风格——这是它的功能，也是它的风险。
+2. 装、开、写正文、拿它去做什么，全部由使用者决定并承担后果。作者不参与、不知情、不授权任何具体用途。
+3. 使用即表示你确认：你在自己的账号、自己的机器、自己有权操作的会话上使用；你所在司法辖区的法律与所接入模型服务方的条款，由你自己核对与遵守。
+
+---
+
+## 三、担保
+
+本项目按 **MIT License** 以「**AS IS**」提供，不附带任何明示或默示担保，包括但不限于适销性、特定用途适用性、不侵权。因使用或无法使用本项目产生的任何直接、间接、附带、后果性损失，作者与贡献者不承担责任。
+
+---
+
+## 四、第三方与隶属关系
+
+- 本项目是**独立的第三方本地插件**，与 DeepSeek（深度求索）及其任何关联主体**无隶属、无背书、无合作关系**；文中出现的产品名仅用于说明运行环境。
+- 运行时依赖 DSH 自身的公开扩展点（`systemPrompt` / `commands` / `webServer` / client slots）。DSH 版本升级可能让这些扩展点变化，届时本插件可能失效——这属于兼容性问题，不属于安全问题。
+- 仓库内不含任何第三方模型权重、SDK 或闭源组件。`assets/prompt.default.txt` 由本项目自行撰写。
+
+---
+
+## 五、凭据与数据
+
+- 插件**不读取、不存储、不传输**任何 API Key、Cookie、会话内容。它写盘的东西只有两样，都在 `%USERPROFILE%\.dsh\composing-room\`：`prompt.txt`（正文）与 `state.json`（开关状态）。
+- 浏览器半边调用的路由是本机 `127.0.0.1` 上的 `/api/composing-room`，只做"读状态 / 翻转开关"两件事。
+- 安装脚本会修改 `%USERPROFILE%\.dsh\profiles\<profile>\cordis.patch.yml`（追加三行 insert）。改动前后请自行备份；脚本本身幂等，重复运行不会叠加。
+
+---
+
+## 六、使用范围
+
+本项目面向**在你自有环境中做提示词工程、写作规范固化与红队自测**的用途。以下情形不在作者意图之内，也不被作者授权：把它部署到你无权操作的账号或机器上；用它规避你已同意的服务条款；用它生成或分发违法内容。若你所在地区对相关技术有额外限制，请自行判断是否可以使用。
+
+---
+
+## 七、移除
+
+```powershell
+# 1) 撤段落
+powershell -NoProfile -ExecutionPolicy Bypass -File room.ps1 off
+# 2) 删掉 cordis.patch.yml 里 composing-room 那三行
+# 3) 删掉软链/目录（删 junction 不会删到本体）
+cmd /c rmdir "%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-composing-room"
+# 4) 删掉正文与状态
+cmd /c rmdir /s /q "%USERPROFILE%\.dsh\composing-room"
+```
+
+移除后重启 DSH，插件即不再加载。
+
+---
+
+## English summary
+
+`composing-room` is a local, third-party plugin for DeepSeek Harness. It appends **one system-prompt section** (a writing-style specification) to your own session, after all built-in sections, and exposes a toggle button in the composer plus a `/room` command. It is **off by default**.
+
+It is provided **AS IS** under the **MIT License**, without warranty of any kind. You are solely responsible for how you use it, for the content you put into `prompt.txt`, and for compliance with the laws of your jurisdiction and the terms of any model service you connect to. There is **no affiliation with, endorsement by, or partnership with DeepSeek**. The plugin does not read, store, or transmit API keys, cookies, or conversation content; it writes only `prompt.txt` and `state.json` under `%USERPROFILE%\.dsh\composing-room\`, and it modifies `cordis.patch.yml` in your DSH profile during installation.
+
+Questions or removal requests: open an issue at <https://github.com/thinkmith/dsh-composing-room/issues>.
