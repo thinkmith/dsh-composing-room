@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+- **License changed: MIT → PolyForm Noncommercial 1.0.0.** Personal and
+  noncommercial use only; commercial use requires written permission from the
+  author. `package.json` now declares `SEE LICENSE IN LICENSE`.
+- README rebuilt around a centered header, static shields badges, tables and
+  collapsible `<details>` blocks; added a project-status / roadmap section that
+  states plainly what still does not work (Windows-only, single profile, no CI,
+  unsigned installer, no compatibility layer for future DSH releases) and a
+  contributing section.
+- `DISCLAIMER.md` rewritten: scope, liability, third parties, credentials,
+  removal, plus an English summary and an explicit noncommercial clause.
+- Added `assets/logo.svg` (geometric type-case mark).
+
 ## 0.3.0
 
 - Ship the writing payload with the package (`assets/prompt.default.txt`); a fresh

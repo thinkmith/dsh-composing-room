@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/badge/DSH-0.2.1--rc.2-8B5CF6" alt="dsh">
   <img src="https://img.shields.io/badge/platform-Windows-0078D4" alt="platform">
   <img src="https://img.shields.io/badge/dependencies-0-brightgreen" alt="dependencies">
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-PolyForm--Noncommercial--1.0.0-orange" alt="license"></a>
 </p>
 
 <p align="center">
@@ -27,6 +27,10 @@
 > 这是 DSH（DeepSeek Harness）的本地插件，**不是**网页应用、不是代理、不联网。
 > 装完之后输入框右侧就多一颗 `● 排版 关` 胶囊按钮；点一下变绿，该会话的每一轮请求都会带上 `prompt.txt` 里那段正文。
 
+> [!WARNING]
+> **个人自用 · 禁止商用。**
+> 本项目按 [PolyForm Noncommercial 1.0.0](LICENSE) 授权：你可以自己用、读、改、分享给自己的朋友，但**不得用于任何商业用途**——包括但不限于公司内部生产流程、付费产品或服务、以本项目为组成部分对外交付的项目。个人研究、学习、折腾、评测都在允许范围内。
+
 ## ✨ 它做什么
 
 | | 能力 | 说明 |
@@ -39,6 +43,67 @@
 | 🛡 | **默认关闭** | `armed: false`。开关状态只存在本地文件里，不上报任何地方 |
 
 它**不**注册工具（`defineTool` 需要 agent/turn 权限校验，没必要），也**不**读你的 API Key、Cookie 或会话内容。
+
+## 🚧 项目状态：能用，但远没做完
+
+> 一句话：**主链路已经跑通并可日常使用，周边还是毛坯。** 下面按"已经能用的效果 / 还没做的部分"分开写，免得被 README 骗。
+
+### 现在实测能到什么程度
+
+| 能做到 | 实测/依据 |
+|:--|:--|
+| 输入框右侧出现胶囊按钮，点一下挂/撤 | 重启后可复现；`● 排版 开/关` 三态正确（含红点异常态） |
+| 开关 1 秒内热生效 | `fs.watchFile` 800 ms 轮询，改 `state.json` 或 `/room on` 都行 |
+| 装完即有正文，不需要额外配 | 包内 `assets/prompt.default.txt`（7407 字符）首次加载自动铺到 `~/.dsh/composing-room/` |
+| 段落真的进请求、改变回答边界 | 挂上后回答出现固定首行 `## <主题> — Technical Reference` 与页脚；不挂则没有 |
+| 四种安装方式都能装成 | SFX 双击 / `install.ps1` / `pnpm add tgz` / 手搓 junction，均在假 profile 上验过 |
+| 单元测试 4/4 绿 | `test\stub.mjs`、`client.mjs`、`route.mjs`、`firstrun.mjs` |
+
+### 还没做 / 待升级
+
+- [ ] **跨平台**：现在**只支持 Windows**。`install.ps1`（`mklink /J`）、`install.cmd`、IExpress 打包、`room.ps1` 全是 Windows 专属；macOS 与 Linux 的 profile 路径、软链方式、打包链一概没做。
+- [ ] **多 profile**：默认只认 `profiles\desktop`，其他 profile 得手传 `-Profile <name>`，不会自动探测。
+- [ ] **多套正文**：一次只能挂一份 `prompt.txt`，做不了「写作模式 / 技术模式」一键切换（想加就得改 `state.json` 的 `textPath` 或敲 `/room path`）。
+- [ ] **按钮可定制**：文案写死「排版」，只有绿/灰/红三态，不能改名、不能换色、不能变成图标。
+- [ ] **i18n**：README 与提示全是中文，英文版没做。
+- [ ] **CI**：没有 GitHub Actions，四个测试只在本地手动跑；PR 来了靠人肉看。
+- [ ] **代码签名**：`setup.exe` 未签名，Windows 会弹 SmartScreen「已保护你的电脑」，只能点"更多信息 → 仍要运行"。
+- [ ] **DSH 版本兼容层**：完全依赖当前扩展点（`systemPrompt.section` / `commands` / `webServer` / client slots），DSH 一升级就可能整条失效，没有版本探测、没有降级路径。
+- [ ] **测试覆盖**：路由 401/404 的失败分支、client 轮询失败路径、`/room path` 换文件都没进自动化测试。
+
+## 🤝 欢迎共建
+
+这个项目**欢迎任何人 fork、改、提 PR**——它本来就是一个人的折腾，做完整要靠更多人。尤其是上面那几条（macOS 移植、多 profile 探测、CI、i18n），谁先动手谁就是作者。
+
+### 怎么提
+
+| 想做什么 | 怎么做 |
+|:--|:--|
+| 报 bug | 开 issue，标题前缀 `[bug]`，附 **DSH 版本 + profile 名 + `/room` 输出 + 按钮颜色**（红点=路由没接上，灰点=段落没挂） |
+| 要功能 | issue 标题前缀 `[feat]`，写清"想解决什么"而不是"想加什么代码" |
+| 交代码 | fork → 分支 → PR。改 `lib/` 前后各跑一次测试；改 `build/` 后跑一次打包 |
+
+### 本地开发
+
+```powershell
+cd "D:\deepseek harness\dsh-composing-room"
+node test\stub.mjs        # 4 个测试，逐个 exit 0 才算过
+node test\client.mjs
+node test\route.mjs
+node test\firstrun.mjs
+node build\build-sfx.mjs  # 只在改了 lib/ 或 assets/ 后需要，产出 dist\*.exe
+```
+
+约定：
+
+- 代码注释、变量名、提交信息用**英文**；中文只出现在 `README.md` / `DISCLAIMER.md` / 用户可见的按钮文案里（PS 5.1 无 BOM 读 GBK，`.ps1` 里写中文会解析炸）
+- 提交信息：`feat:` / `fix:` / `docs:` / `chore:`
+- `.cmd`、`.ps1` 必须 CRLF（`.gitattributes` 已经强制）
+- 别在 `apply()` 里裸写 `ctx.webServer`——看 [疑难排查](#-疑难排查) 那一节
+
+### 关于商用（再强调一次）
+
+提交代码即表示你同意以 [PolyForm Noncommercial 1.0.0](LICENSE) 发布你的贡献。**本项目不接受"把它做成商业产品"方向的贡献或合作**：不做 SaaS 托管版、不做付费分发、不接企业定制。如果你想在自己的公司里用，那属于商用，请先联系作者谈授权。
 
 ## 🚀 安装
 
@@ -257,14 +322,18 @@ cmd /c rmdir "%USERPROFILE%\.dsh\profiles\desktop\node_modules\dsh-composing-roo
 1. 本插件挂在**你自己的** DSH、账号与会话上，正文进入每一轮请求、会改变模型回答的默认边界——这是功能，也是风险。
 2. 安装、开启、写正文、以及拿它做什么，全部由使用者决定并承担后果；作者不参与、不知情、不授权任何具体用途。
 3. 本项目是独立第三方本地插件，**与 DeepSeek（深度求索）及其关联主体无隶属、无背书、无合作**；产品名仅用于说明运行环境。
-4. 按 **MIT License** 以「**AS IS**」提供，不附带任何明示或默示担保；因使用产生的直接、间接、附带、后果性损失，作者与贡献者不承担责任。
-5. 插件不读取、不存储、不传输 API Key、Cookie 与会话内容；落盘只有 `prompt.txt` 与 `state.json`。
+4. **禁止商用**：按 [PolyForm Noncommercial 1.0.0](LICENSE) 授权，仅限个人研究、学习、评测与非商业组织使用；任何商业用途（公司内部生产、付费产品与服务、对外交付项目）都需另行取得书面授权。
+5. 按上述许可以「**AS IS**」提供，不附带任何明示或默示担保；因使用产生的直接、间接、附带、后果性损失，作者与贡献者不承担责任。
+6. 插件不读取、不存储、不传输 API Key、Cookie 与会话内容；落盘只有 `prompt.txt` 与 `state.json`。
 
 <details>
 <summary><h4>📄 License</h4></summary>
 
 <br>
 
-[MIT](LICENSE) © thinkmith
+[PolyForm Noncommercial 1.0.0](LICENSE) © thinkmith
+
+可以：个人自用、学习、研究、修改、分享（附许可）。
+不可以：商用、SaaS 托管、付费分发、企业内生产使用（需另行授权）。
 
 </details>

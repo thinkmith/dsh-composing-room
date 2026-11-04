@@ -40,9 +40,10 @@
     "deepseek-harness",
     "plugin",
     "system-prompt",
-    "composer"
+    "composer",
+    "noncommercial"
   ],
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "os": [
     "win32"
   ],

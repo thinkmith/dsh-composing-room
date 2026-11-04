@@ -2,6 +2,21 @@ _本文不是法律意见，只是一份把话说清楚的说明。使用本插�
 
 ---
 
+## 零、许可与商用禁止（先看这条）
+
+本项目按 **[PolyForm Noncommercial 1.0.0](LICENSE)** 授权，**不是** MIT，也**不是**可以随意商用的开源许可。
+
+| 可以做 | 不可以做 |
+|---|---|
+| 个人自用、学习、研究、评测、折腾 | 任何商业用途 |
+| 读代码、改代码、给朋友分享（附许可全文） | 公司内部生产流程里用 |
+| 在教学、公益、公共研究机构里用 | 打包进付费产品、SaaS 托管、对外交付项目 |
+| 提 issue、提 PR 一起改 | 拿它当商业服务的一部分卖给客户 |
+
+一句话：**自己的机器上随便用，别人的钱一分不能赚。** 要商用请先联系作者取得书面授权。
+
+---
+
 ## 一、这个仓库里是什么
 
 | 组成 | 是什么 | 不是什么 |
@@ -25,7 +40,7 @@ _本文不是法律意见，只是一份把话说清楚的说明。使用本插�
 
 ## 三、担保
 
-本项目按 **MIT License** 以「**AS IS**」提供，不附带任何明示或默示担保，包括但不限于适销性、特定用途适用性、不侵权。因使用或无法使用本项目产生的任何直接、间接、附带、后果性损失，作者与贡献者不承担责任。
+本项目按 **PolyForm Noncommercial 1.0.0**（见 [LICENSE](LICENSE)）以「**AS IS**」提供，不附带任何明示或默示担保，包括但不限于适销性、特定用途适用性、不侵权。因使用或无法使用本项目产生的任何直接、间接、附带、后果性损失，作者与贡献者不承担责任。
 
 ---
 
@@ -71,6 +86,6 @@ cmd /c rmdir /s /q "%USERPROFILE%\.dsh\composing-room"
 
 `composing-room` is a local, third-party plugin for DeepSeek Harness. It appends **one system-prompt section** (a writing-style specification) to your own session, after all built-in sections, and exposes a toggle button in the composer plus a `/room` command. It is **off by default**.
 
-It is provided **AS IS** under the **MIT License**, without warranty of any kind. You are solely responsible for how you use it, for the content you put into `prompt.txt`, and for compliance with the laws of your jurisdiction and the terms of any model service you connect to. There is **no affiliation with, endorsement by, or partnership with DeepSeek**. The plugin does not read, store, or transmit API keys, cookies, or conversation content; it writes only `prompt.txt` and `state.json` under `%USERPROFILE%\.dsh\composing-room\`, and it modifies `cordis.patch.yml` in your DSH profile during installation.
+It is licensed under the **PolyForm Noncommercial License 1.0.0** — **personal and noncommercial use only; commercial use of any kind is not permitted** — and is provided **AS IS**, without warranty of any kind. You are solely responsible for how you use it, for the content you put into `prompt.txt`, and for compliance with the laws of your jurisdiction and the terms of any model service you connect to. There is **no affiliation with, endorsement by, or partnership with DeepSeek**. The plugin does not read, store, or transmit API keys, cookies, or conversation content; it writes only `prompt.txt` and `state.json` under `%USERPROFILE%\.dsh\composing-room\`, and it modifies `cordis.patch.yml` in your DSH profile during installation.
 
-Questions or removal requests: open an issue at <https://github.com/thinkmith/dsh-composing-room/issues>.
+Commercial licensing enquiries, questions, or removal requests: open an issue at <https://github.com/thinkmith/dsh-composing-room/issues>.
